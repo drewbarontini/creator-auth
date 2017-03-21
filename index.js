@@ -3,8 +3,11 @@ const session = require('express-session');
 const passport = require('passport');
 const passportGoogle = require('./app/auth/google');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
+
+mongoose.connect('mongodb://localhost:27017/creator-auth');
 
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'pug');

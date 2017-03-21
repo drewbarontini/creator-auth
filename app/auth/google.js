@@ -2,6 +2,7 @@ const passport = require('passport');
 const config = require('./config').google;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const init = require('./init');
+const User = require('../models/user');
 
 passport.use(
   new GoogleStrategy({
@@ -17,7 +18,34 @@ passport.use(
       avatar: profile.photos[0].value
     };
 
-    return done(null, user);
+    const query = {
+      name: profile.displayName
+    };
+
+    const fields = {
+      providerId: profile.id,
+      provider: profile.provider,
+      name: profile.displayName,
+      email: profile.emails[0].value,
+      avatar: profile.photos[0].value
+    };
+
+    const options = {
+      upsert: true
+    };
+
+    User.findOneAndUpdate(
+      query,
+      fields,
+      options,
+      (err, user) => {
+        if (err) {
+          return done(err);
+        } else {
+          return done(null, user);
+        }
+      }
+    );
   }
 ));
 
