@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  if user
+    p
+      = user.name
+    p
+      a(href='auth/logout') Sign out
+  else
+    a(href='/auth/google') Sign in with Google
