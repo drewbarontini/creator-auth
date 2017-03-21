@@ -32,7 +32,7 @@ app.get('/', (req, res, next) => {
 
   res.render('index', {
     title: 'Creator (Multi)',
-    user: getCurrentUser(req.session.passport)
+    currentUser: getCurrentUser(req.session.passport)
   });
 });
 

@@ -1,9 +1,9 @@
 extends layout
 
 block content
-  if user
+  if currentUser
     p
-      = user.name
+      = currentUser.name
     p
       a(href='auth/logout') Sign out
   else
