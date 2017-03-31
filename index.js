@@ -22,19 +22,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.get('/', (req, res, next) => {
-  getCurrentUser = (session) => {
-    if (session !== undefined) {
-      return session.user;
-    }
-
-    return null;
-  }
-
-  res.render('index', {
-    title: 'Creator (Multi)',
-    currentUser: getCurrentUser(req.session.passport)
-  });
+  res.render('index');
 });
 
 app.get('/auth/google',
