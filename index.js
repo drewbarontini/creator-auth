@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const passportGoogle = require('./app/auth/google');
+const passportTwitter = require('./app/auth/twitter');
 const path = require('path');
 const mongoose = require('mongoose');
 
@@ -45,6 +46,18 @@ app.get('/auth/google',
 
 app.get('/auth/google/callback',
   passportGoogle.authenticate('google', { failureRedirect: '/auth/failure' }),
+  (req, res) => {
+    res.redirect('/');
+  }
+);
+
+router.get('/twitter', passportTwitter.authenticate('twitter'));
+
+router.get('/twitter/callback',
+  passportTwitter.authenticate('twitter', {
+    successRedirect: '/',
+    failureRedirect: '/auth/failure'
+  }),
   (req, res) => {
     res.redirect('/');
   }
