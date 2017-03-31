@@ -45,9 +45,9 @@ app.get('/auth/google/callback',
   }
 );
 
-router.get('/twitter', passportTwitter.authenticate('twitter'));
+app.get('/twitter', passportTwitter.authenticate('twitter'));
 
-router.get('/twitter/callback',
+app.get('/twitter/callback',
   passportTwitter.authenticate('twitter', {
     successRedirect: '/',
     failureRedirect: '/auth/failure'
