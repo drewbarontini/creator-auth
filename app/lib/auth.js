@@ -1,28 +1,26 @@
 const User = require('../models/user');
 
-exports.createUser = (accessToken, refreshToken, profile, done) => {
-  const user = {
-    providerId: profile.id,
-    provider: profile.provider,
-    name: profile.displayName,
-    avatar: profile.photos[0].value
-  };
+const createFields = (profile) => ({
+  providerId: profile.id,
+  provider: profile.provider,
+  name: profile.displayName,
+  email: profile.emails[0].value,
+  avatar: profile.photos[0].value
+});
 
-  const query = {
-    name: profile.displayName
-  };
+const createOptions = () => ({
+  upsert: true,
+  'new': true
+});
 
-  const fields = {
-    providerId: profile.id,
-    provider: profile.provider,
-    name: profile.displayName,
-    email: profile.emails[0].value,
-    avatar: profile.photos[0].value
-  };
+const createQuery = (profile) => ({
+  email: profile.emails[0].value
+});
 
-  const options = {
-    upsert: true
-  };
+const createUser = (accessToken, refreshToken, profile, done) => {
+  const query = createQuery(profile);
+  const fields = createFields(profile);
+  const options = createOptions();
 
   User.findOneAndUpdate(
     query,
@@ -37,3 +35,10 @@ exports.createUser = (accessToken, refreshToken, profile, done) => {
     }
   );
 }
+
+module.exports = {
+  createFields,
+  createOptions,
+  createQuery,
+  createUser
+};
