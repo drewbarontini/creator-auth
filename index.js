@@ -28,6 +28,8 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
+  req.session.return = req.query.return;
+
   res.render('index');
 });
 
@@ -39,9 +41,11 @@ app.get('/auth/google',
 );
 
 app.get('/auth/google/callback',
-  passportGoogle.authenticate('google', { failureRedirect: '/auth/failure' }),
+  passportGoogle.authenticate('google', {
+    failureRedirect: '/auth/failure'
+  }),
   (req, res) => {
-    res.redirect('/');
+    res.redirect(req.session.return || '/');
   }
 );
 
@@ -52,7 +56,7 @@ app.get('/twitter/callback',
     failureRedirect: '/auth/failure'
   }),
   (req, res) => {
-    res.redirect('/');
+    res.redirect(req.session.return || '/');
   }
 );
 
