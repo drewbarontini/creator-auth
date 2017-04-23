@@ -34,7 +34,7 @@ app.get('/', (req, res, next) => {
 app.get('/auth/google',
   passportGoogle.authenticate(
     'google',
-    { scope: ['openid profile email https://www.googleapis.com/auth/plus.login'] }
+    scope: ['email', 'profile']
   )
 );
 
